@@ -2,8 +2,7 @@ var request = new XMLHttpRequest();
 var baseUrl = "https://api.giphy.com/v1/gifs/random";
 var apiKey = "df9tybhWThxuIrJohKKHYaXwvBonDmIV";
 request.open("GET", baseUrl + "?api_key=" + apiKey + "&tag=cats&rating=g");
-
-request.onload = function () {
+  request.onload = function () {
   var response = request.response;
   var parseData = JSON.parse(response);
 
