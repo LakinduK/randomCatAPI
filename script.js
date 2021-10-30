@@ -1,27 +1,30 @@
-var request = new XMLHttpRequest();
 var baseUrl = "https://api.giphy.com/v1/gifs/random";
 var apiKey = "df9tybhWThxuIrJohKKHYaXwvBonDmIV";
-request.open("GET", baseUrl + "?api_key=" + apiKey + "&tag=cats&rating=g");
-  request.onload = function () {
-  var response = request.response;
-  var parseData = JSON.parse(response);
+const generateButton = document.querySelector(".generate-new-cat");
+const gifDisplay = document.querySelector(".gif-display");
+const apiData = `${baseUrl}?api_key=${apiKey}&tag=cats&rating=g`; //Template Literal String
 
-  //print parsed data on console
-  console.log(parseData);
-
-  //print out url on console
-  var originalUrl = parseData.data.images.original.url;
-  console.log(originalUrl);
-
-  //view image on html
-  var gif = document.createElement("img");
-  gif.setAttribute("src", originalUrl);
-  document.body.appendChild(gif);
+//Get Gif as a re-usable function
+const getGifs = () => {
+  // Fetch API
+  fetch(apiData)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      const gifUrl = data.data.image_original_url; //Gets Gif URL
+      gifDisplay.setAttribute("src", gifUrl); // Sets src for img
+    })
+    // Error Handling
+    .catch(function (err) {
+      console.warn("Something went wrong.", err);
+    });
 };
 
-//error handling using onerror method
-request.oneerror = function () {
-  console.log("There seems to be a problem!");
+//Get Gifs on load
+window.onload = function () {
+  getGifs();
 };
 
-request.send();
+//Get Gifs on Button Click
+generateButton.addEventListener("click", () => getGifs());
